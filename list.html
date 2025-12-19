@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CFツール - 月次一覧</title>
+  <link rel="stylesheet" href="app.css" />
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div style="font-weight:700">CFツール</div>
+        <div class="badge">静的 + Supabase</div>
+        <div class="small" data-title></div>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Home</a>
+        <a class="btn" href="entry.html">入力</a>
+        <a class="btn" href="cf.html">CF表</a>
+        <a class="btn" href="list.html">月次一覧</a>
+      </nav>
+    </header>
+
+    
+<div class="card">
+  <div class="row" style="justify-content:space-between">
+    <div>
+      <h2 style="margin:0 0 6px">月次一覧</h2>
+      <div class="help">編集ボタンから更新できます。確定だけ見たい時はフィルタを使ってください。</div>
+    </div>
+    <div style="min-width:220px">
+      <label>表示月（YYYY-MM）</label>
+      <input id="month" type="month" />
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:10px">
+    <button class="btn" id="btnOnlyConfirmed" type="button">確定だけ表示</button>
+    <button class="btn" id="btnShowAll" type="button">全部表示</button>
+    <a class="btn primary" href="entry.html">新規入力</a>
+  </div>
+
+  <hr />
+  <div class="row">
+    <span class="pill in">入金</span> <span class="code" id="sumIn"></span>円
+    <span style="width:10px"></span>
+    <span class="pill out">出金</span> <span class="code" id="sumOut"></span>円
+    <span style="width:10px"></span>
+    <span class="pill">差引</span> <span class="code" id="sumNet"></span>円
+  </div>
+
+  <div style="overflow:auto;margin-top:10px">
+    <table>
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>区分</th>
+          <th>項目名</th>
+          <th class="right">金額</th>
+          <th>備考</th>
+          <th class="right">操作</th>
+        </tr>
+      </thead>
+      <tbody id="listBody"></tbody>
+    </table>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+
+    <footer>
+      <div>※ Supabase Authでログインしたユーザーのデータのみ表示されます（RLS）。</div>
+    </footer>
+  </div>
+
+  <script>
+    (async ()=> {
+      try {
+        CFApp && CFApp.pageList();
+      } catch(e) {
+        const t = document.querySelector("#toast");
+        if (t) CFApp.setToast(t, e.message || String(e), false);
+        else alert(e.message || String(e));
+      }
+    })();
+  </script>
+</body>
+</html>
