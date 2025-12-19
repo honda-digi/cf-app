@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CFツール - Home</title>
+  <link rel="stylesheet" href="app.css" />
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div style="font-weight:700">CFツール</div>
+        <div class="badge">静的 + Supabase</div>
+        <div class="small" data-title></div>
+      </div>
+      <nav class="nav">
+        <a class="btn" href="index.html">Home</a>
+        <a class="btn" href="entry.html">入力</a>
+        <a class="btn" href="cf.html">CF表</a>
+        <a class="btn" href="list.html">月次一覧</a>
+      </nav>
+    </header>
+
+    
+<div class="card">
+  <h2 style="margin:0 0 6px">ログイン</h2>
+  <div class="help">メールアドレスにログインリンク（OTP）を送ります。送られたリンクからこのページに戻るとログイン状態になります。</div>
+  <div id="authBox" style="margin-top:10px">
+    <label>メールアドレス</label>
+    <input id="email" type="email" placeholder="you@example.com" />
+    <div class="row" style="margin-top:10px">
+      <button class="btn primary" id="btnLogin" type="button">ログインリンクを送信</button>
+    </div>
+  </div>
+
+  <div id="userBox" style="display:none;margin-top:10px">
+    <div class="row">
+      <span class="pill confirmed">ログイン中</span>
+      <span class="small">ユーザー：</span><span class="code" id="userEmail"></span>
+    </div>
+
+    <hr />
+    <h3 style="margin:0 0 6px">初期残高</h3>
+    <div class="help">CF表の「月末残高」計算の起点になります（必要ならいつでも変更OK）。</div>
+    <div class="grid">
+      <div>
+        <label>初期残高（円）</label>
+        <input id="openingBalance" type="number" step="1" placeholder="0" />
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn ok" id="btnSaveOb" type="button">初期残高を保存</button>
+      <button class="btn danger" id="btnLogout" type="button">ログアウト</button>
+    </div>
+
+    <hr />
+    <div class="help">
+      次にやること：<a href="entry.html">入力</a> → <a href="cf.html">CF表</a> → <a href="list.html">月次一覧</a>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<div class="card">
+  <h3 style="margin:0 0 6px">セットアップ手順</h3>
+  <ol class="help">
+    <li>Supabaseの SQL Editor で <span class="code">supabase.sql</span> を実行</li>
+    <li><span class="code">config.js</span> に URL と anon key を貼る</li>
+    <li>このフォルダを静的ホスティングに配置して開く</li>
+  </ol>
+</div>
+
+
+    <footer>
+      <div>※ Supabase Authでログインしたユーザーのデータのみ表示されます（RLS）。</div>
+    </footer>
+  </div>
+
+  <script>
+    (async ()=> {
+      try {
+        CFApp && CFApp.pageIndex();
+      } catch(e) {
+        const t = document.querySelector("#toast");
+        if (t) CFApp.setToast(t, e.message || String(e), false);
+        else alert(e.message || String(e));
+      }
+    })();
+  </script>
+</body>
+</html>
